@@ -6,6 +6,7 @@ import com.thoughtworks.springbootemployee.model.Employee;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class EmployeeRepository {
     private final List<Employee> employees;
@@ -42,5 +43,11 @@ public class EmployeeRepository {
     public void remove(int employeeId) {
         Employee employee = this.get(employeeId);
         employees.remove(employee);
+    }
+
+    public List<Employee> getAllByGender(String gender) {
+        return this.getAll().stream()
+                .filter(employee -> employee.getGender() == gender)
+                .collect(Collectors.toList());
     }
 }

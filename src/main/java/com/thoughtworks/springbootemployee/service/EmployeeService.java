@@ -31,4 +31,8 @@ public class EmployeeService {
     public void remove(int employeeId) {
         employeeRepository.remove(employeeId);
     }
+
+    public List<Employee> getAllByGender(String gender) {
+        return employeeRepository.getAllByGender(gender);
+    }
 }

@@ -8,6 +8,7 @@ import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -125,6 +126,23 @@ class SpringBootEmployeeApplicationTests {
 		);
 		//then
 		assertEquals("Not Found", notFoundException.getMessage());
+
+	}
+
+	@Test
+	void should_return_all_male_employees_when_get_all_employee_by_gender_given_employees_male() throws DuplicatedIdException {
+		//given
+		EmployeeRepository employeeRepository = new EmployeeRepository();
+		EmployeeService employeeService = new EmployeeService(employeeRepository);
+
+		employeeService.add(new Employee(1, "test", 18, 1000, "male"));
+		employeeService.add(new Employee(2, "test", 18, 1000, "male"));
+		employeeService.add(new Employee(3, "test", 18, 1000, "female"));
+		//when
+		final List<Employee> actual = employeeService.getAllByGender("male");
+
+		//then
+		assertEquals(2, actual.size());
 
 	}
 }
