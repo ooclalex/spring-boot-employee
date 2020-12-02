@@ -53,6 +53,7 @@ public class EmployeeRepository {
     }
 
     public List<Employee> getAllByPage(int page, int pageSize) throws OutOfRangeException {
+        page--;
         if(page < 0 || pageSize <0){
             throw new OutOfRangeException();
         }
