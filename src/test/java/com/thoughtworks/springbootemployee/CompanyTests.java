@@ -217,4 +217,23 @@ public class CompanyTests {
         assertEquals("Not Found", notFoundException.getMessage());
 
     }
+
+    @Test
+    void should_return_exception_when_delete_employee_and_get_given_employee() throws DuplicatedIdException {
+        //given
+        CompanyRepository companyRepository = new CompanyRepository();
+        CompanyService companyService = new CompanyService(companyRepository);
+
+        companyService.add(new Company(1, "My New Company1", 10000, new ArrayList<Employee>()));
+
+        companyService.remove(1);
+
+        //when
+        final NotFoundException notFoundException = assertThrows(NotFoundException.class,
+                () -> companyService.get(1)
+        );
+        //then
+        assertEquals("Not Found", notFoundException.getMessage());
+
+    }
 }
