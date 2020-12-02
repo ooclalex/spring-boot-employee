@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -54,7 +55,7 @@ class SpringBootEmployeeApplicationTests {
 		EmployeeRepository employeeRepository = new EmployeeRepository();
 		EmployeeService employeeService = new EmployeeService(employeeRepository);
 		Employee employee = new Employee(1, "test", 18, 1000, "male");
-		final List<Employee> expected = Arrays.asList(employee);
+		final List<Employee> expected = Collections.singletonList(employee);
 		employeeService.add(employee);
 		//when
 		final List<Employee> actual = employeeService.getAll();
