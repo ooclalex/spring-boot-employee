@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.model;
 
+import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
 
 import java.util.ArrayList;
@@ -8,9 +9,13 @@ public class Company {
     private int id;
     private String name;
     private int employeeNumber;
-    private EmployeeService employees;
+    private EmployeeService employeeService;
 
     public Company(int id, String name, int employeeNumber, ArrayList<Employee> employees) {
+        this.id = id;
+        this.name = name;
+        this.employeeNumber = employeeNumber;
+        this.setEmployeeService(employees);
     }
 
     public int getId() {
@@ -37,11 +42,12 @@ public class Company {
         this.employeeNumber = employeeNumber;
     }
 
-    public EmployeeService getEmployees() {
-        return employees;
+    public EmployeeService getEmployeeService() {
+        return employeeService;
     }
 
-    public void setEmployees(EmployeeService employees) {
-        this.employees = employees;
+    public void setEmployeeService(ArrayList<Employee> employees) {
+        this.employeeService = new EmployeeService(new EmployeeRepository(employees)) ;
     }
+
 }

@@ -16,6 +16,10 @@ public class EmployeeRepository {
         this.employees = new ArrayList<>();
     }
 
+    public EmployeeRepository(List<Employee> employees) {
+        this.employees = employees;
+    }
+
     public Employee add(Employee requestEmployee) throws DuplicatedIdException {
         if (employees.stream().anyMatch(employee -> employee.getId() == requestEmployee.getId())) {
             throw new DuplicatedIdException();
