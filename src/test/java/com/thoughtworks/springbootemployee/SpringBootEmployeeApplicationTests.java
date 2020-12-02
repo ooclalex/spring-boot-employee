@@ -162,7 +162,7 @@ class SpringBootEmployeeApplicationTests {
 
 		final List<Employee> expected = Arrays.asList(employee1, employee2);
 		//when
-		final List<Employee> actual = employeeService.getAllByPage(1, 2);
+		final List<Employee> actual = employeeService.getAllByPage(0, 2);
 
 		//then
 		assertEquals(expected, actual);
