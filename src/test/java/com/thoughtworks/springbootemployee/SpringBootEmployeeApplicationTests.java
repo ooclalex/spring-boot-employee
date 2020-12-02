@@ -7,6 +7,9 @@ import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -39,6 +42,22 @@ class SpringBootEmployeeApplicationTests {
 		);
 		//then
 		assertEquals("Duplicated ID", duplicatedIdException.getMessage());
+
+	}
+
+	@Test
+	void should_return_all_employees_when_get_all_employee_given_employees() throws DuplicatedIdException {
+		//given
+		EmployeeRepository employeeRepository = new EmployeeRepository();
+		EmployeeService employeeService = new EmployeeService(employeeRepository);
+		Employee employee = new Employee(1, "test", 18, 1000, "male");
+		final List<Employee> expected = Arrays.asList(employee);
+		employeeService.add(employee);
+		//when
+		final List<Employee> actual = employeeService.getAll(employee);
+
+		//then
+		assertEquals(expected, actual);
 
 	}
 }
