@@ -2,6 +2,7 @@ package com.thoughtworks.springbootemployee;
 
 
 import com.thoughtworks.springbootemployee.exception.DuplicatedIdException;
+import com.thoughtworks.springbootemployee.exception.NotFoundException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
@@ -63,6 +64,38 @@ public class CompanyTests {
 
         //then
         assertEquals(expected, actual);
+
+    }
+
+
+    @Test
+    void should_return_specific_company_when_get_company_given_compnaies_company_id() throws DuplicatedIdException {
+        //given
+        CompanyRepository companyRepository = new CompanyRepository();
+        CompanyService companyService = new CompanyService(companyRepository);
+        Company company = new Company(1, "My Company", 1000, new ArrayList<Employee>());
+        companyService.add(company);
+
+        //when
+        final Company actual = companyService.get(1);
+
+        //then
+        assertEquals(company, actual);
+
+    }
+
+    @Test
+    void should_return_exception_employees_when_get_employee_given_invalid_employee_id() {
+        //given
+        CompanyRepository companyRepository = new CompanyRepository();
+        CompanyService companyService = new CompanyService(companyRepository);
+
+        //when
+        final NotFoundException notFoundException = assertThrows(NotFoundException.class,
+                () -> companyService.get(1)
+        );
+        //then
+        assertEquals("Not Found", notFoundException.getMessage());
 
     }
 }
