@@ -34,8 +34,7 @@ public class EmployeeRepository {
     }
 
     public Employee update(int employeeId, Employee updateEmployee) {
-        Employee employee = this.get(employeeId);
-        employees.remove(employee);
+        this.remove(employeeId);
         employees.add(updateEmployee);
         return updateEmployee;
     }
