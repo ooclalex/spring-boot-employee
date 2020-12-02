@@ -17,6 +17,6 @@ public class EmployeeService {
     }
 
     public List<Employee> getAll() {
-        return null;
+        return employeeRepository.getAll();
     }
 }

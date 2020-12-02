@@ -15,4 +15,8 @@ public class EmployeeRepository {
         this.employees.add(requestEmployee);
         return requestEmployee;
     }
+
+    public List<Employee> getAll() {
+        return employees;
+    }
 }
