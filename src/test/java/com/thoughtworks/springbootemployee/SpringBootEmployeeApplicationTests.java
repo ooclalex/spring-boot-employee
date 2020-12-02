@@ -145,4 +145,27 @@ class SpringBootEmployeeApplicationTests {
 		assertEquals(2, actual.size());
 
 	}
+
+
+	@Test
+	void should_return_first_2_employee_when_get_employee_by_page_given_employees_page1_pageSize2() throws DuplicatedIdException {
+		//given
+		EmployeeRepository employeeRepository = new EmployeeRepository();
+		EmployeeService employeeService = new EmployeeService(employeeRepository);
+
+		Employee employee1 = new Employee(1, "test", 18, 1000, "male");
+		Employee employee2 = new Employee(2, "test", 18, 1000, "female");
+
+		employeeService.add(employee1);
+		employeeService.add(employee2);
+		employeeService.add(new Employee(3, "test", 18, 1000, "female"));
+
+		final List<Employee> expected = Arrays.asList(employee1, employee2);
+		//when
+		final List<Employee> actual = employeeService.getAllByPage(1, 2);
+
+		//then
+		assertEquals(expected, actual);
+
+	}
 }
