@@ -2,6 +2,7 @@ package com.thoughtworks.springbootemployee;
 
 import com.thoughtworks.springbootemployee.exception.DuplicatedIdException;
 import com.thoughtworks.springbootemployee.exception.NotFoundException;
+import com.thoughtworks.springbootemployee.exception.OutOfRangeException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
@@ -148,7 +149,7 @@ class SpringBootEmployeeApplicationTests {
 
 
 	@Test
-	void should_return_first_2_employee_when_get_employee_by_page_given_employees_page1_pageSize2() throws DuplicatedIdException {
+	void should_return_first_2_employee_when_get_employee_by_page_given_employees_page1_pageSize2() throws DuplicatedIdException, OutOfRangeException {
 		//given
 		EmployeeRepository employeeRepository = new EmployeeRepository();
 		EmployeeService employeeService = new EmployeeService(employeeRepository);
@@ -166,6 +167,36 @@ class SpringBootEmployeeApplicationTests {
 
 		//then
 		assertEquals(expected, actual);
+
+	}
+
+	@Test
+	void should_return_exception_when_get_employee_by_page_given_employees_invalid_page() {
+		//given
+		EmployeeRepository employeeRepository = new EmployeeRepository();
+		EmployeeService employeeService = new EmployeeService(employeeRepository);
+
+		//when
+		final OutOfRangeException outOfRangeException = assertThrows(OutOfRangeException.class,
+				() -> employeeService.getAllByPage(-1,2)
+		);
+		//then
+		assertEquals("Out of range", outOfRangeException.getMessage());
+
+	}
+
+	@Test
+	void should_return_exception_when_get_employee_by_page_given_employees_invalid_page_size(){
+		//given
+		EmployeeRepository employeeRepository = new EmployeeRepository();
+		EmployeeService employeeService = new EmployeeService(employeeRepository);
+
+		//when
+		final OutOfRangeException outOfRangeException = assertThrows(OutOfRangeException.class,
+				() -> employeeService.getAllByPage(2,-1)
+		);
+		//then
+		assertEquals("Out of range", outOfRangeException.getMessage());
 
 	}
 }

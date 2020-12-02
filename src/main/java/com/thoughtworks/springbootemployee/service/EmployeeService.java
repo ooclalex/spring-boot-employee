@@ -1,6 +1,7 @@
 package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.exception.DuplicatedIdException;
+import com.thoughtworks.springbootemployee.exception.OutOfRangeException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 
@@ -36,7 +37,7 @@ public class EmployeeService {
         return employeeRepository.getAllByGender(gender);
     }
 
-    public List<Employee> getAllByPage(int page, int pageSize) {
+    public List<Employee> getAllByPage(int page, int pageSize) throws OutOfRangeException {
         return employeeRepository.getAllByPage(page, pageSize);
     }
 }

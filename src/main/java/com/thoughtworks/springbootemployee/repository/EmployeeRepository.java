@@ -2,6 +2,7 @@ package com.thoughtworks.springbootemployee.repository;
 
 import com.thoughtworks.springbootemployee.exception.DuplicatedIdException;
 import com.thoughtworks.springbootemployee.exception.NotFoundException;
+import com.thoughtworks.springbootemployee.exception.OutOfRangeException;
 import com.thoughtworks.springbootemployee.model.Employee;
 
 import java.util.ArrayList;
@@ -51,7 +52,10 @@ public class EmployeeRepository {
                 .collect(Collectors.toList());
     }
 
-    public List<Employee> getAllByPage(int page, int pageSize) {
+    public List<Employee> getAllByPage(int page, int pageSize) throws OutOfRangeException {
+        if(page < 0 || pageSize <0){
+            throw new OutOfRangeException();
+        }
         return employees.stream().skip(pageSize * page).limit(pageSize).collect(Collectors.toList());
     }
 }
