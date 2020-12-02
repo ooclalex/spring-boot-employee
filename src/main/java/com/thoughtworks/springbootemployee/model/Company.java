@@ -19,6 +19,10 @@ public class Company {
         this.setEmployeeService(employees);
     }
 
+    public Company() {
+
+    }
+
     public int getId() {
         return id;
     }

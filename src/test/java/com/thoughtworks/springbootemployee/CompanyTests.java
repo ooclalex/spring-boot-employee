@@ -182,4 +182,39 @@ public class CompanyTests {
         assertEquals("Out of range", outOfRangeException.getMessage());
 
     }
+
+    @Test
+    void should_return_updated_employees_when_get_employee_given_employees_employee_id() throws DuplicatedIdException {
+        //given
+        CompanyRepository companyRepository = new CompanyRepository();
+        CompanyService companyService = new CompanyService(companyRepository);
+        companyService.add(new Company(1, "My Company1", 1000, new ArrayList<Employee>()));
+
+        Company company = new Company(1, "My New Company1", 10000, new ArrayList<Employee>());
+
+        //when
+        final Company updateActual = companyService.update(1, company);
+        final Company getUpdatedActual = companyService.get(1);
+
+
+        //then
+        assertEquals(company, updateActual);
+        assertEquals(company, getUpdatedActual);
+
+    }
+
+    @Test
+    void should_return_exception_when_update_company_given_invalid_company_id() {
+        //given
+        CompanyRepository companyRepository = new CompanyRepository();
+        CompanyService companyService = new CompanyService(companyRepository);
+
+        //when
+        final NotFoundException notFoundException = assertThrows(NotFoundException.class,
+                () -> companyService.update(1, new Company())
+        );
+        //then
+        assertEquals("Not Found", notFoundException.getMessage());
+
+    }
 }
