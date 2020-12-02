@@ -16,7 +16,7 @@ public class EmployeeService {
         return employeeRepository.add(requestEmployee);
     }
 
-    public List<Employee> getAll(Employee employee) {
+    public List<Employee> getAll() {
         return null;
     }
 }

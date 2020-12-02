@@ -54,7 +54,7 @@ class SpringBootEmployeeApplicationTests {
 		final List<Employee> expected = Arrays.asList(employee);
 		employeeService.add(employee);
 		//when
-		final List<Employee> actual = employeeService.getAll(employee);
+		final List<Employee> actual = employeeService.getAll();
 
 		//then
 		assertEquals(expected, actual);
