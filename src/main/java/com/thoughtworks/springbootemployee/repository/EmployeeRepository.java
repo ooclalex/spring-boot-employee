@@ -8,11 +8,11 @@ import java.util.List;
 
 public class EmployeeRepository {
     private List<Employee> employees = new ArrayList<>();
-    public Employee add(Employee employee) throws DuplicatedIdException {
-        if(employees.stream().anyMatch(item -> item.getId() == employee.getId())){
+    public Employee add(Employee requestEmployee) throws DuplicatedIdException {
+        if(employees.stream().anyMatch(employee -> employee.getId() == requestEmployee.getId())){
             throw new DuplicatedIdException();
         };
-        this.employees.add(employee);
-        return employee;
+        this.employees.add(requestEmployee);
+        return requestEmployee;
     }
 }

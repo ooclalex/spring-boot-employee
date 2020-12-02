@@ -10,7 +10,7 @@ public class EmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
-    public Employee add(Employee employee) throws DuplicatedIdException {
-        return employeeRepository.add(employee);
+    public Employee add(Employee requestEmployee) throws DuplicatedIdException {
+        return employeeRepository.add(requestEmployee);
     }
 }
