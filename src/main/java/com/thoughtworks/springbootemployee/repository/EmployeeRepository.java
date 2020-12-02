@@ -39,4 +39,9 @@ public class EmployeeRepository {
         employees.add(updateEmployee);
         return updateEmployee;
     }
+
+    public void remove(int employeeId) {
+        Employee employee = this.get(employeeId);
+        employees.remove(employee);
+    }
 }

@@ -107,4 +107,24 @@ class SpringBootEmployeeApplicationTests {
 		assertEquals("Not Found", notFoundException.getMessage());
 
 	}
+
+
+	@Test
+	void should_return_exception_when_delete_employee_and_get_given_employee() throws DuplicatedIdException {
+		//given
+		EmployeeRepository employeeRepository = new EmployeeRepository();
+		EmployeeService employeeService = new EmployeeService(employeeRepository);
+
+		employeeService.add(new Employee(1, "test", 18, 1000, "male"));
+
+		employeeService.remove(1);
+
+		//when
+		final NotFoundException notFoundException = assertThrows(NotFoundException.class,
+				() -> employeeService.get(1)
+		);
+		//then
+		assertEquals("Not Found", notFoundException.getMessage());
+
+	}
 }
