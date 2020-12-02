@@ -1,7 +1,10 @@
 package com.thoughtworks.springbootemployee.controller;
 
+import com.thoughtworks.springbootemployee.exception.DuplicatedIdException;
 import com.thoughtworks.springbootemployee.exception.NotFoundException;
+import com.thoughtworks.springbootemployee.exception.OutOfRangeException;
 import com.thoughtworks.springbootemployee.model.Employee;
+import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,58 +16,44 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
-    private List<Employee> employees = new ArrayList<>();
+    private EmployeeService employeeService = new EmployeeService;
 
     @GetMapping
     public List<Employee> getAll() {
-        return employees;
+        return employeeService.getAll();
     }
 
     @GetMapping(params = {"page", "pageSize"})
     public List<Employee> getAllByPaging(
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer pageSize
-    ) {
-        return employees.stream().skip(pageSize * page).limit(pageSize).collect(Collectors.toList());
+    ) throws OutOfRangeException {
+        return employeeService.getAllByPage(page, pageSize);
     }
 
     @GetMapping(params = {"gender"})
     public List<Employee> getAllByGender(@RequestParam(required = false) String gender) {
-        return employees.stream()
-                .filter(employee -> employee.getGender().equals(gender))
-                .collect(Collectors.toList());
+        return employeeService.getAllByGender(gender);
     }
 
     @GetMapping("/{employeeId}")
     public Employee getSpecificEmployee(@PathVariable Integer employeeId) {
-        return employees.stream()
-                .filter(employee -> employeeId.equals(employee.getId()))
-                .findFirst()
-                .orElseThrow(NotFoundException::new);
+        return employeeService.get(employeeId);
     }
 
 
     @PostMapping
-    public Employee create(@RequestBody Employee employeeUpdate) {
-        employees.add(employeeUpdate);
-        return employeeUpdate;
+    public Employee create(@RequestBody Employee employeeUpdate) throws DuplicatedIdException {
+        return employeeService.add(employeeUpdate);
     }
 
     @PutMapping("/{employeeId}")
     public Employee update(@PathVariable Integer employeeId, @RequestBody Employee employeeUpdate) {
-        employees.stream().filter(employee -> employeeId.equals(employee.getId())).findFirst().ifPresent(
-                employee -> {
-                    employees.remove(employee);
-                    employees.add(employeeUpdate);
-                }
-        );
-        return employeeUpdate;
+        return employeeService.update(employeeId, employeeUpdate);
     }
 
     @DeleteMapping("/{employeeId}")
     public void delete(@PathVariable Integer employeeId) {
-        employees.stream().filter(employee -> employeeId.equals(employee.getId())).findFirst().ifPresent(
-                employee -> employees.remove(employee)
-        );
+        employeeService.remove(employeeId);
     }
 }
