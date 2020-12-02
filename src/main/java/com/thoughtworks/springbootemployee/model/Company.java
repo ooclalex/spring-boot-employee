@@ -4,6 +4,7 @@ import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Company {
     private int id;
@@ -11,7 +12,7 @@ public class Company {
     private int employeeNumber;
     private EmployeeService employeeService;
 
-    public Company(int id, String name, int employeeNumber, ArrayList<Employee> employees) {
+    public Company(int id, String name, int employeeNumber, List<Employee>  employees) {
         this.id = id;
         this.name = name;
         this.employeeNumber = employeeNumber;
@@ -46,8 +47,11 @@ public class Company {
         return employeeService;
     }
 
-    public void setEmployeeService(ArrayList<Employee> employees) {
+    public void setEmployeeService(List<Employee> employees) {
         this.employeeService = new EmployeeService(new EmployeeRepository(employees)) ;
     }
 
+    public List<Employee> getEmployeeList() {
+        return this.employeeService.getAll();
+    }
 }
