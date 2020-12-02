@@ -7,12 +7,9 @@ import com.thoughtworks.springbootemployee.exception.OutOfRangeException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
-import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import com.thoughtworks.springbootemployee.service.CompanyService;
-import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -27,7 +24,7 @@ public class CompanyTests {
         //given
         CompanyRepository companyRepository = new CompanyRepository();
         CompanyService companyService = new CompanyService(companyRepository);
-        Company company = new Company(1, "My Company", 1000, new ArrayList<Employee>());
+        Company company = new Company(1, "My Company", 1000, new ArrayList<>());
 
         //when
         final Company actual = companyService.add(company);
@@ -41,7 +38,7 @@ public class CompanyTests {
         //given
         CompanyRepository companyRepository = new CompanyRepository();
         CompanyService companyService = new CompanyService(companyRepository);
-        Company company = new Company(1, "My Company", 1000, new ArrayList<Employee>());
+        Company company = new Company(1, "My Company", 1000, new ArrayList<>());
         companyService.add(company);
         //when
         final DuplicatedIdException duplicatedIdException = assertThrows(DuplicatedIdException.class,
@@ -58,7 +55,7 @@ public class CompanyTests {
         //given
         CompanyRepository companyRepository = new CompanyRepository();
         CompanyService companyService = new CompanyService(companyRepository);
-        Company company = new Company(1, "My Company", 1000, new ArrayList<Employee>());
+        Company company = new Company(1, "My Company", 1000, new ArrayList<>());
         final List<Company> expected = Collections.singletonList(company);
         companyService.add(company);
         //when
@@ -71,11 +68,11 @@ public class CompanyTests {
 
 
     @Test
-    void should_return_specific_company_when_get_company_given_compnaies_company_id() throws DuplicatedIdException {
+    void should_return_specific_company_when_get_company_given_companies_company_id() throws DuplicatedIdException {
         //given
         CompanyRepository companyRepository = new CompanyRepository();
         CompanyService companyService = new CompanyService(companyRepository);
-        Company company = new Company(1, "My Company", 1000, new ArrayList<Employee>());
+        Company company = new Company(1, "My Company", 1000, new ArrayList<>());
         companyService.add(company);
 
         //when
@@ -102,11 +99,11 @@ public class CompanyTests {
     }
 
     @Test
-    void should_return_specific_company_employee_list_when_get_company_employee_list_given_compnaies_company_id() throws DuplicatedIdException {
+    void should_return_specific_company_employee_list_when_get_company_employee_list_given_companies_company_id() throws DuplicatedIdException {
         //given
         CompanyRepository companyRepository = new CompanyRepository();
         CompanyService companyService = new CompanyService(companyRepository);
-        List<Employee> expected = new ArrayList<Employee>();
+        List<Employee> expected = new ArrayList<>();
         expected.add(new Employee());
 
         companyService.add(new Company(1, "My Company", 1000, expected));
@@ -119,7 +116,7 @@ public class CompanyTests {
     }
 
     @Test
-    void should_return_error_when_get_company_employee_list_given_compnaies_invalid_company_id() throws DuplicatedIdException {
+    void should_return_error_when_get_company_employee_list_given_companies_invalid_company_id() {
         //given
         CompanyRepository companyRepository = new CompanyRepository();
         CompanyService companyService = new CompanyService(companyRepository);
@@ -138,12 +135,12 @@ public class CompanyTests {
         CompanyRepository companyRepository = new CompanyRepository();
         CompanyService companyService = new CompanyService(companyRepository);
 
-        Company company1 = new Company(1, "My Company1", 1000, new ArrayList<Employee>());
-        Company company2 = new Company(2, "My Company2", 1000, new ArrayList<Employee>());
+        Company company1 = new Company(1, "My Company1", 1000, new ArrayList<>());
+        Company company2 = new Company(2, "My Company2", 1000, new ArrayList<>());
 
         companyService.add(company1);
         companyService.add(company2);
-        companyService.add(new Company(3, "My Company3", 1000, new ArrayList<Employee>()));
+        companyService.add(new Company(3, "My Company3", 1000, new ArrayList<>()));
 
         final List<Company> expected = Arrays.asList(company1, company2);
         //when
@@ -188,9 +185,9 @@ public class CompanyTests {
         //given
         CompanyRepository companyRepository = new CompanyRepository();
         CompanyService companyService = new CompanyService(companyRepository);
-        companyService.add(new Company(1, "My Company1", 1000, new ArrayList<Employee>()));
+        companyService.add(new Company(1, "My Company1", 1000, new ArrayList<>()));
 
-        Company company = new Company(1, "My New Company1", 10000, new ArrayList<Employee>());
+        Company company = new Company(1, "My New Company1", 10000, new ArrayList<>());
 
         //when
         final Company updateActual = companyService.update(1, company);
@@ -224,7 +221,7 @@ public class CompanyTests {
         CompanyRepository companyRepository = new CompanyRepository();
         CompanyService companyService = new CompanyService(companyRepository);
 
-        companyService.add(new Company(1, "My New Company1", 10000, new ArrayList<Employee>()));
+        companyService.add(new Company(1, "My New Company1", 10000, new ArrayList<>()));
 
         companyService.remove(1);
 
