@@ -60,4 +60,19 @@ class SpringBootEmployeeApplicationTests {
 		assertEquals(expected, actual);
 
 	}
+
+	@Test
+	void should_return_specific_employees_when_get_employee_given_employees_employee_id() throws DuplicatedIdException {
+		//given
+		EmployeeRepository employeeRepository = new EmployeeRepository();
+		EmployeeService employeeService = new EmployeeService(employeeRepository);
+		Employee employee = new Employee(1, "test", 18, 1000, "male");
+
+		//when
+		final Employee actual = employeeService.get(1);
+
+		//then
+		assertEquals(employee, actual);
+
+	}
 }
