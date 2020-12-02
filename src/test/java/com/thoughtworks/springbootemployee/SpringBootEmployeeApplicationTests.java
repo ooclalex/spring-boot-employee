@@ -95,4 +95,18 @@ class SpringBootEmployeeApplicationTests {
 
 	}
 
+	@Test
+	void should_return_exception_when_update_employee_given_invalid_employee_id() throws DuplicatedIdException {
+		//given
+		EmployeeRepository employeeRepository = new EmployeeRepository();
+		EmployeeService employeeService = new EmployeeService(employeeRepository);
+
+		//when
+		final NotFoundException notFoundException = assertThrows(NotFoundException.class,
+				() -> employeeService.update(1, new Employee())
+		);
+		//then
+		assertEquals("Not Found", notFoundException.getMessage());
+
+	}
 }

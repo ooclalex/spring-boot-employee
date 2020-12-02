@@ -34,14 +34,9 @@ public class EmployeeRepository {
     }
 
     public Employee update(int employeeId, Employee updateEmployee) {
-        this.getAll().stream().filter(employee -> employeeId == employee.getId())
-                .findFirst()
-                .ifPresent(
-                        employee -> {
-                            employees.remove(employee);
-                            employees.add(updateEmployee);
-                        }
-                );
+        Employee employee = this.get(employeeId);
+        employees.remove(employee);
+        employees.add(updateEmployee);
         return updateEmployee;
     }
 }
