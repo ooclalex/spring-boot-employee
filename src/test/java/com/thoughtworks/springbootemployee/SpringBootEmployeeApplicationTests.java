@@ -11,6 +11,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class SpringBootEmployeeApplicationTests {
@@ -67,6 +69,7 @@ class SpringBootEmployeeApplicationTests {
 		EmployeeRepository employeeRepository = new EmployeeRepository();
 		EmployeeService employeeService = new EmployeeService(employeeRepository);
 		Employee employee = new Employee(1, "test", 18, 1000, "male");
+		employeeService.add(employee);
 
 		//when
 		final Employee actual = employeeService.get(1);
