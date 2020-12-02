@@ -1,6 +1,8 @@
 package com.thoughtworks.springbootemployee.repository;
 
+import com.thoughtworks.springbootemployee.EmployeeNotFoundException;
 import com.thoughtworks.springbootemployee.exception.DuplicatedIdException;
+import com.thoughtworks.springbootemployee.exception.NotFoundException;
 import com.thoughtworks.springbootemployee.model.Employee;
 
 import java.util.ArrayList;
@@ -28,6 +30,6 @@ public class EmployeeRepository {
         return this.getAll().stream()
                 .filter(employee -> employeeId == employee.getId())
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(NotFoundException::new);
     }
 }
