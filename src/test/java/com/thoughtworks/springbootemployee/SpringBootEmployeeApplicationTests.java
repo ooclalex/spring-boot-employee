@@ -86,13 +86,17 @@ class SpringBootEmployeeApplicationTests {
 		//given
 		EmployeeRepository employeeRepository = new EmployeeRepository();
 		EmployeeService employeeService = new EmployeeService(employeeRepository);
+		employeeService.add(new Employee(1, "test", 18, 1000, "male"));
+
+		Employee employee = new Employee(1, "ABC", 18, 1000, "male");
 
 		//when
-		final NotFoundException notFoundException = assertThrows(NotFoundException.class,
-				() -> employeeService.get(1)
-		);
+		final Employee actual1 = employeeService.update(1, employee);
+		final Employee actual2 = employeeService.get(1);
+
 		//then
-		assertEquals("Not Found", notFoundException.getMessage());
+		assertEquals(employee, actual1);
+		assertEquals(employee, actual2);
 
 	}
 }
