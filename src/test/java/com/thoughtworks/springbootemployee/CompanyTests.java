@@ -3,6 +3,7 @@ package com.thoughtworks.springbootemployee;
 
 import com.thoughtworks.springbootemployee.exception.DuplicatedIdException;
 import com.thoughtworks.springbootemployee.exception.NotFoundException;
+import com.thoughtworks.springbootemployee.exception.OutOfRangeException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -128,5 +130,56 @@ public class CompanyTests {
         );
         //then
         assertEquals("Not Found", notFoundException.getMessage());
+    }
+
+    @Test
+    void should_return_first_2_companies_when_get_companies_by_page_given_companies_page1_pageSize2() throws DuplicatedIdException, OutOfRangeException {
+        //given
+        CompanyRepository companyRepository = new CompanyRepository();
+        CompanyService companyService = new CompanyService(companyRepository);
+
+        Company company1 = new Company(1, "My Company1", 1000, new ArrayList<Employee>());
+        Company company2 = new Company(2, "My Company2", 1000, new ArrayList<Employee>());
+
+        companyService.add(company1);
+        companyService.add(company2);
+        companyService.add(new Company(3, "My Company3", 1000, new ArrayList<Employee>()));
+
+        final List<Company> expected = Arrays.asList(company1, company2);
+        //when
+        final List<Company> actual = companyService.getAllByPage(1, 2);
+
+        //then
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void should_return_exception_when_get_companies_by_page_given_companies_invalid_page() {
+        //given
+        CompanyRepository companyRepository = new CompanyRepository();
+        CompanyService companyService = new CompanyService(companyRepository);
+
+        //when
+        final OutOfRangeException outOfRangeException = assertThrows(OutOfRangeException.class,
+                () -> companyService.getAllByPage(-1,2)
+        );
+        //then
+        assertEquals("Out of range", outOfRangeException.getMessage());
+
+    }
+
+    @Test
+    void should_return_exception_when_get_companies_by_page_given_companies_invalid_page_size(){
+        //given
+        CompanyRepository companyRepository = new CompanyRepository();
+        CompanyService companyService = new CompanyService(companyRepository);
+
+        //when
+        final OutOfRangeException outOfRangeException = assertThrows(OutOfRangeException.class,
+                () -> companyService.getAllByPage(2,-1)
+        );
+        //then
+        assertEquals("Out of range", outOfRangeException.getMessage());
+
     }
 }
