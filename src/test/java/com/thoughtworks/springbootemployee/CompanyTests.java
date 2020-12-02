@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -44,6 +46,23 @@ public class CompanyTests {
         );
         //then
         assertEquals("Duplicated ID", duplicatedIdException.getMessage());
+
+    }
+
+
+    @Test
+    void should_return_all_companies_when_get_all_companies_given_companies() throws DuplicatedIdException {
+        //given
+        CompanyRepository companyRepository = new CompanyRepository();
+        CompanyService companyService = new CompanyService(companyRepository);
+        Company company = new Company(1, "My Company", 1000, new ArrayList<Employee>());
+        final List<Company> expected = Collections.singletonList(company);
+        companyService.add(company);
+        //when
+        final List<Company> actual = companyService.getAll();
+
+        //then
+        assertEquals(expected, actual);
 
     }
 }
