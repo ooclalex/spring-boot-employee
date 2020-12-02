@@ -8,13 +8,11 @@ import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 class SpringBootEmployeeApplicationTests {
@@ -65,7 +63,7 @@ class SpringBootEmployeeApplicationTests {
 
 	}
 	@Test
-	void should_return_exception_employees_when_get_employee_given_invalid_employee_id() throws DuplicatedIdException {
+	void should_return_exception_employees_when_get_employee_given_invalid_employee_id() {
 		//given
 		EmployeeRepository employeeRepository = new EmployeeRepository();
 		EmployeeService employeeService = new EmployeeService(employeeRepository);
@@ -96,7 +94,7 @@ class SpringBootEmployeeApplicationTests {
 	}
 
 	@Test
-	void should_return_exception_when_update_employee_given_invalid_employee_id() throws DuplicatedIdException {
+	void should_return_exception_when_update_employee_given_invalid_employee_id() {
 		//given
 		EmployeeRepository employeeRepository = new EmployeeRepository();
 		EmployeeService employeeService = new EmployeeService(employeeRepository);
