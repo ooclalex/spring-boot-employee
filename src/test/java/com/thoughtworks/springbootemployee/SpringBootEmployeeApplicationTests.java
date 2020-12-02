@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class SpringBootEmployeeApplicationTests {
 
 	@Test
-	void should_return_employees_when_add_employee_given_no_employees() {
+	void should_return_employees_when_add_employee_given_no_employees() throws DuplicatedIdException {
 		//given
 		EmployeeRepository employeeRepository = new EmployeeRepository();
 		EmployeeService employeeService = new EmployeeService(employeeRepository);
@@ -27,7 +27,7 @@ class SpringBootEmployeeApplicationTests {
 	}
 
 	@Test
-	void should_return_error_when_add_employee_given_employee_with_same_id() {
+	void should_return_error_when_add_employee_given_employee_with_same_id() throws DuplicatedIdException {
 		//given
 		EmployeeRepository employeeRepository = new EmployeeRepository();
 		EmployeeService employeeService = new EmployeeService(employeeRepository);
