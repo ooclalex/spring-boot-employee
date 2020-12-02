@@ -39,6 +39,6 @@ class SpringBootEmployeeApplicationTests {
 		);
 		//then
 		assertEquals("Duplicated ID", duplicatedIdException.getMessage());
-		//then
+
 	}
 }
