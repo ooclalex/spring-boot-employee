@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CompanyTests {
     @Test
-    void should_return_company_when_add_company_given_no_employees() throws DuplicatedIdException {
+    void should_return_company_when_add_company_given_no_employees(){
         //given
         CompanyRepository companyRepository = new CompanyRepository();
         CompanyService companyService = new CompanyService(companyRepository);
