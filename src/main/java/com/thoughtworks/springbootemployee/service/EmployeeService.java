@@ -9,6 +9,9 @@ import java.util.List;
 
 public class EmployeeService {
     EmployeeRepository employeeRepository;
+    public EmployeeService(){
+        this.employeeRepository = new EmployeeRepository();
+    }
     public EmployeeService(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
