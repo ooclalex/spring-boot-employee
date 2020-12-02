@@ -114,6 +114,19 @@ public class CompanyTests {
 
         //then
         assertEquals(expected, actual);
+    }
 
+    @Test
+    void should_return_error_when_get_company_employee_list_given_compnaies_invalid_company_id() throws DuplicatedIdException {
+        //given
+        CompanyRepository companyRepository = new CompanyRepository();
+        CompanyService companyService = new CompanyService(companyRepository);
+
+        //when
+        final NotFoundException notFoundException = assertThrows(NotFoundException.class,
+                () -> companyService.getEmployeeList(1)
+        );
+        //then
+        assertEquals("Not Found", notFoundException.getMessage());
     }
 }
