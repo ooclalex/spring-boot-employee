@@ -123,4 +123,19 @@ public class CompanyIntegrationTest {
                 .andExpect(jsonPath("$[1].salary").value(employee2.getSalary()))
                 .andExpect(jsonPath("$[1].gender").value(employee2.getGender()));
     }
+
+    @Test
+    public void should_return_first_2_employee_when_get_employee_by_page_given_employees_page1_pageSize2() throws Exception {
+        //given
+        companyRepository.save(new Company("ABC Company", 1000, new ArrayList<Employee>()));
+        companyRepository.save(new Company("ABCD Company", 1100, new ArrayList<Employee>()));
+        companyRepository.save(new Company("AB Company", 100, new ArrayList<Employee>()));
+        //when
+        //then
+        mockMvc.perform(MockMvcRequestBuilders.get("/companies")
+                .param("page", "1")
+                .param("pageSize", "2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.*", hasSize(2)));
+    }
 }
