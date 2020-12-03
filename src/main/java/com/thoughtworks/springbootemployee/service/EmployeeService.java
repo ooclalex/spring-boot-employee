@@ -46,6 +46,6 @@ public class EmployeeService {
     }
 
     public Page<Employee> getAllByPage(int page, int pageSize){
-        return employeeRepository.findAll(PageRequest.of(page, pageSize));
+        return employeeRepository.findAll(PageRequest.of(page - 1, pageSize));
     }
 }
