@@ -4,6 +4,7 @@ import com.thoughtworks.springbootemployee.exception.DuplicatedIdException;
 import com.thoughtworks.springbootemployee.exception.OutOfRangeException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class EmployeeController {
     }
 
     @GetMapping(params = {"page", "pageSize"})
-    public List<Employee> getAllByPaging(
+    public Page<Employee> getAllByPaging(
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer pageSize
     ) throws OutOfRangeException {
@@ -32,7 +33,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{employeeId}")
-    public Employee getSpecificEmployee(@PathVariable Integer employeeId) {
+    public Employee getSpecificEmployee(@PathVariable String employeeId) {
         return employeeService.get(employeeId);
     }
 
@@ -43,12 +44,12 @@ public class EmployeeController {
     }
 
     @PutMapping("/{employeeId}")
-    public Employee update(@PathVariable Integer employeeId, @RequestBody Employee employeeUpdate) {
+    public Employee update(@PathVariable String employeeId, @RequestBody Employee employeeUpdate) {
         return employeeService.update(employeeId, employeeUpdate);
     }
 
     @DeleteMapping("/{employeeId}")
-    public void delete(@PathVariable Integer employeeId) {
+    public void delete(@PathVariable String employeeId) {
         employeeService.remove(employeeId);
     }
 }
