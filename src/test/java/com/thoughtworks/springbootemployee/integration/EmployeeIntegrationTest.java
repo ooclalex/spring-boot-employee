@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.List;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -90,5 +91,22 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("age").value(18))
                 .andExpect(jsonPath("salary").value(1000))
                 .andExpect(jsonPath("gender").value("male"));
+    }
+
+    @Test
+    public void should_return_all_male_employees_when_get_all_employee_by_gender_given_employees_male() throws Exception {
+        //given
+        Employee employee = employeeRepository.save(new Employee("Victor", 18, 1000, "male"));
+        employeeRepository.save(new Employee("Victor", 18, 1000, "female"));
+        //when
+        //then
+        mockMvc.perform(MockMvcRequestBuilders.get("/employees").param("gender", "male"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.*", hasSize(1)))
+                .andExpect(jsonPath("$[0].id").isString())
+                .andExpect(jsonPath("$[0].name").value("Victor"))
+                .andExpect(jsonPath("$[0].age").value(18))
+                .andExpect(jsonPath("$[0].salary").value(1000))
+                .andExpect(jsonPath("$[0].gender").value("male"));
     }
 }
