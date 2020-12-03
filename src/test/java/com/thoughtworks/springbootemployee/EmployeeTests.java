@@ -1,12 +1,14 @@
 package com.thoughtworks.springbootemployee;
 
 import com.thoughtworks.springbootemployee.exception.DuplicatedIdException;
+import com.thoughtworks.springbootemployee.exception.NotFoundException;
 import com.thoughtworks.springbootemployee.exception.OutOfRangeException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -20,7 +22,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class EmployeeTests {
@@ -107,6 +109,37 @@ class EmployeeTests {
 
 		//then
 		assertEquals(expected, actual);
+
+	}
+
+	@Test
+	void should_return_updated_employee_when_updated_employee_given_employees_new_employee() throws DuplicatedIdException, OutOfRangeException {
+		//given
+
+		employeeService.add(new Employee("1", "test", 18, 1000, "male"));
+
+		Employee employee = new Employee("1", "testA", 18, 1000, "male");
+		when(employeeRepository.save(employee)).thenReturn(employee);
+		//when
+		final Employee actual = employeeService.update("1", employee);
+
+		//then
+		assertEquals(employee, actual);
+
+	}
+
+	@Test
+	void should_return_null_when_delete_employee_given_employees_new_employee() throws DuplicatedIdException, OutOfRangeException {
+		//given
+		Employee employee = new Employee("1", "test", 18, 1000, "male");
+		employeeService.add(employee);
+
+		//when
+		employeeService.remove("1");
+		final ArgumentCaptor<Employee> employeeArgumentCaptor = ArgumentCaptor.forClass(Employee.class);
+
+		//then
+		verify(employeeRepository, times(1)).deleteById("1");
 
 	}
 }
