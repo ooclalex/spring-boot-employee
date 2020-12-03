@@ -138,4 +138,39 @@ public class CompanyIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.*", hasSize(2)));
     }
+
+    @Test
+    public void should_return_updated_company_when_update_company_given_company_company_id() throws Exception {
+        //given
+        Company company = companyRepository.save(new Company("ABC Company", 1000, new ArrayList<Employee>()));
+        String companyAsJson = "{\n" +
+                "    \"name\" : \"ABCD Company\",\n" +
+                "    \"employeeNumber\" : \"1200\",\n" +
+                "    \"employees\" : [\n" +
+                "        {\n" +
+                "            \"id\" : \"1\",\n" +
+                "            \"name\" : \"Victor\",\n" +
+                "            \"age\"   : \"18\",\n" +
+                "            \"salary\" : \"1000\",\n" +
+                "            \"gender\" : \"male\"\n" +
+                "        }\n" +
+                "    ]\n" +
+                "}";
+        //when
+        //then
+        mockMvc.perform(MockMvcRequestBuilders.put("/companies/" + company.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(companyAsJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").isString())
+                .andExpect(jsonPath("$.name").value("ABCD Company"))
+                .andExpect(jsonPath("$.employeeNumber").value(1200))
+                .andExpect(jsonPath("$.employees", hasSize(1)));
+
+        List<Company> companyList = companyRepository.findAll();
+        assertEquals(1, companyList.size());
+        assertEquals("ABCD Company", companyList.get(0).getName());
+        assertEquals(1200, companyList.get(0).getEmployeeNumber());
+        assertEquals(1, companyList.get(0).getEmployees().size());
+    }
 }

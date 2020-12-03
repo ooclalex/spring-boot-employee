@@ -46,7 +46,7 @@ public class CompanyController {
         return companyService.add(companyUpdate);
     }
 
-    @PutMapping("/{employeeId}")
+    @PutMapping("/{companyId}")
     public Company update(@PathVariable String companyId, @RequestBody Company companyUpdate) {
         return companyService.update(companyId, companyUpdate);
     }
