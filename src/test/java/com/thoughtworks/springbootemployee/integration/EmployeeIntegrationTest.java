@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -74,5 +75,20 @@ public class EmployeeIntegrationTest {
         assertEquals(18, employeeList.get(0).getAge());
         assertEquals(1000, employeeList.get(0).getSalary());
         assertEquals("male", employeeList.get(0).getGender());
+    }
+
+    @Test
+    public void should_return_specific_employee_when_get_employee_given_employee_id() throws Exception {
+        //given
+        Employee employee = employeeRepository.save(new Employee("Victor", 18, 1000, "male"));
+        //when
+        //then
+        mockMvc.perform(MockMvcRequestBuilders.get("/employees/"+employee.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").isString())
+                .andExpect(jsonPath("name").value("Victor"))
+                .andExpect(jsonPath("age").value(18))
+                .andExpect(jsonPath("salary").value(1000))
+                .andExpect(jsonPath("gender").value("male"));
     }
 }
