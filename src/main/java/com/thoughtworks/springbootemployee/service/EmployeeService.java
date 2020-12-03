@@ -29,7 +29,8 @@ public class EmployeeService {
     }
 
     public Employee update(String employeeId, Employee updateEmployee) {
-        this.remove(employeeId);
+        this.get(employeeId);
+        updateEmployee.setId(employeeId);
         return employeeRepository.save(updateEmployee);
     }
 

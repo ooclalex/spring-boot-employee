@@ -4,6 +4,7 @@ import com.thoughtworks.springbootemployee.exception.DuplicatedIdException;
 import com.thoughtworks.springbootemployee.exception.OutOfRangeException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +13,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
-    private EmployeeService employeeService = new EmployeeService();
+    @Autowired
+    private EmployeeService employeeService;
 
     @GetMapping
     public List<Employee> getAll() {
@@ -20,11 +22,11 @@ public class EmployeeController {
     }
 
     @GetMapping(params = {"page", "pageSize"})
-    public Page<Employee> getAllByPaging(
+    public List<Employee> getAllByPaging(
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer pageSize
     ) throws OutOfRangeException {
-        return employeeService.getAllByPage(page, pageSize);
+        return employeeService.getAllByPage(page, pageSize).getContent();
     }
 
     @GetMapping(params = {"gender"})
