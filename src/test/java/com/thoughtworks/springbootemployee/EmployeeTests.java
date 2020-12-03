@@ -1,7 +1,6 @@
 package com.thoughtworks.springbootemployee;
 
 import com.thoughtworks.springbootemployee.exception.DuplicatedIdException;
-import com.thoughtworks.springbootemployee.exception.NotFoundException;
 import com.thoughtworks.springbootemployee.exception.OutOfRangeException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
@@ -21,7 +20,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,9 +31,9 @@ class EmployeeTests {
 	private EmployeeRepository employeeRepository;
 
 	@Test
-	void should_return_employees_when_add_employee_given_no_employees() throws DuplicatedIdException {
+	void should_return_employees_when_add_employee_given_no_employees() {
 		//given
-		Employee employee = new Employee("1", "test", 18, 1000, "male");
+		Employee employee = new Employee("test", 18, 1000, "male");
 		when(employeeRepository.save(employee)).thenReturn(employee);
 
 		//when
@@ -46,9 +44,9 @@ class EmployeeTests {
 	}
 
 	@Test
-	void should_return_all_employees_when_get_all_employee_given_employees() throws DuplicatedIdException {
+	void should_return_all_employees_when_get_all_employee_given_employees() {
 		//given
-		Employee employee = new Employee("1", "test", 18, 1000, "male");
+		Employee employee = new Employee("test", 18, 1000, "male");
 		final List<Employee> expected = Collections.singletonList(employee);
 		employeeService.add(employee);
 		when(employeeRepository.findAll()).thenReturn(expected);
@@ -61,9 +59,9 @@ class EmployeeTests {
 	}
 
 	@Test
-	void should_return_specific_employees_when_get_employee_given_employees_employee_id() throws DuplicatedIdException {
+	void should_return_specific_employees_when_get_employee_given_employees_employee_id() {
 		//given
-		Employee employee = new Employee("1", "test", 18, 1000, "male");
+		Employee employee = new Employee("test", 18, 1000, "male");
 		employeeService.add(employee);
 		when(employeeRepository.findById("1")).thenReturn(java.util.Optional.of(employee));
 
@@ -76,13 +74,13 @@ class EmployeeTests {
 	}
 
 	@Test
-	void should_return_all_male_employees_when_get_all_employee_by_gender_given_employees_male() throws DuplicatedIdException {
+	void should_return_all_male_employees_when_get_all_employee_by_gender_given_employees_male() {
 		//given
 
-		employeeService.add(new Employee("1", "test", 18, 1000, "male"));
-		employeeService.add(new Employee("2", "test", 18, 1000, "male"));
-		employeeService.add(new Employee("3", "test", 18, 1000, "female"));
-		List<Employee> employees = Arrays.asList(new Employee("1", "test", 18, 1000, "male"), new Employee("2", "test", 18, 1000, "male"));
+		employeeService.add(new Employee("test", 18, 1000, "male"));
+		employeeService.add(new Employee("test", 18, 1000, "male"));
+		employeeService.add(new Employee("test", 18, 1000, "female"));
+		List<Employee> employees = Arrays.asList(new Employee("test", 18, 1000, "male"), new Employee("test", 18, 1000, "male"));
 		when(employeeRepository.findAllByGender("male")).thenReturn(employees);
 		//when
 		final List<Employee> actual = employeeService.getAllByGender("male");
@@ -93,14 +91,14 @@ class EmployeeTests {
 	}
 
 	@Test
-	void should_return_first_2_employee_when_get_employee_by_page_given_employees_page1_pageSize2() throws DuplicatedIdException, OutOfRangeException {
+	void should_return_first_2_employee_when_get_employee_by_page_given_employees_page1_pageSize2() {
 		//given
-		Employee employee1 = new Employee("1", "test", 18, 1000, "male");
-		Employee employee2 = new Employee("2", "test", 18, 1000, "female");
+		Employee employee1 = new Employee("test", 18, 1000, "male");
+		Employee employee2 = new Employee("test", 18, 1000, "female");
 
 		employeeService.add(employee1);
 		employeeService.add(employee2);
-		employeeService.add(new Employee("3", "test", 18, 1000, "female"));
+		employeeService.add(new Employee("test", 18, 1000, "female"));
 
 		final Page<Employee> expected = new PageImpl<>(Arrays.asList(employee1, employee2));
 		when(employeeRepository.findAll(PageRequest.of(1, 2))).thenReturn(expected);
@@ -113,15 +111,17 @@ class EmployeeTests {
 	}
 
 	@Test
-	void should_return_updated_employee_when_updated_employee_given_employees_new_employee() throws DuplicatedIdException, OutOfRangeException {
+	void should_return_updated_employee_when_updated_employee_given_employees_new_employee(){
 		//given
 
-		employeeService.add(new Employee("1", "test", 18, 1000, "male"));
+		Employee oldEmployee = new Employee("test", 18, 1000, "male");
+		oldEmployee.setId("1");
 
-		Employee employee = new Employee("1", "testA", 18, 1000, "male");
+		Employee employee = new Employee("testA", 18, 1000, "male");
+		when(employeeRepository.findById("1")).thenReturn(java.util.Optional.of(employee));
 		when(employeeRepository.save(employee)).thenReturn(employee);
 		//when
-		final Employee actual = employeeService.update("1", employee);
+		final Employee actual = employeeService.update(oldEmployee.getId(), employee);
 
 		//then
 		assertEquals(employee, actual);
@@ -129,9 +129,9 @@ class EmployeeTests {
 	}
 
 	@Test
-	void should_return_null_when_delete_employee_given_employees_new_employee() throws DuplicatedIdException, OutOfRangeException {
+	void should_return_null_when_delete_employee_given_employees_new_employee() {
 		//given
-		Employee employee = new Employee("1", "test", 18, 1000, "male");
+		Employee employee = new Employee("test", 18, 1000, "male");
 		employeeService.add(employee);
 
 		//when

@@ -16,7 +16,7 @@ public class EmployeeService {
     @Autowired
     EmployeeRepository employeeRepository;
 
-    public Employee add(Employee requestEmployee) throws DuplicatedIdException {
+    public Employee add(Employee requestEmployee){
         return employeeRepository.save(requestEmployee);
     }
 
@@ -29,9 +29,12 @@ public class EmployeeService {
     }
 
     public Employee update(String employeeId, Employee updateEmployee) {
-        this.get(employeeId);
-        updateEmployee.setId(employeeId);
-        return employeeRepository.save(updateEmployee);
+        Employee foundEmployee = this.get(employeeId);
+        foundEmployee.setAge(updateEmployee.getAge());
+        foundEmployee.setGender(updateEmployee.getGender());
+        foundEmployee.setName(updateEmployee.getName());
+        foundEmployee.setSalary(updateEmployee.getSalary());
+        return employeeRepository.save(foundEmployee);
     }
 
     public void remove(String employeeId) {
@@ -42,7 +45,7 @@ public class EmployeeService {
         return employeeRepository.findAllByGender(gender);
     }
 
-    public Page<Employee> getAllByPage(int page, int pageSize) throws OutOfRangeException {
+    public Page<Employee> getAllByPage(int page, int pageSize){
         return employeeRepository.findAll(PageRequest.of(page, pageSize));
     }
 }

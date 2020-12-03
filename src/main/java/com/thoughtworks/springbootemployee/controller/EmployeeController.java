@@ -6,6 +6,7 @@ import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class EmployeeController {
     public List<Employee> getAllByPaging(
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer pageSize
-    ) throws OutOfRangeException {
+    ) {
         return employeeService.getAllByPage(page, pageSize).getContent();
     }
 
@@ -41,7 +42,8 @@ public class EmployeeController {
 
 
     @PostMapping
-    public Employee create(@RequestBody Employee employeeUpdate) throws DuplicatedIdException {
+    @ResponseStatus(HttpStatus.CREATED)
+    public Employee create(@RequestBody Employee employeeUpdate) {
         return employeeService.add(employeeUpdate);
     }
 
