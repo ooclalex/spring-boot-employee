@@ -12,6 +12,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -65,5 +68,11 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("age").value(18))
                 .andExpect(jsonPath("salary").value(1000))
                 .andExpect(jsonPath("gender").value("male"));
+        List<Employee> employeeList = employeeRepository.findAll();
+        assertEquals(1, employeeList.size());
+        assertEquals("Victor", employeeList.get(0).getName());
+        assertEquals(18, employeeList.get(0).getAge());
+        assertEquals(1000, employeeList.get(0).getSalary());
+        assertEquals("male", employeeList.get(0).getGender());
     }
 }
