@@ -5,8 +5,8 @@ import com.thoughtworks.springbootemployee.exception.OutOfRangeException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.CompanyService;
-import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,12 +23,12 @@ public class CompanyController {
     }
 
     @GetMapping("/{companyId}")
-    public Company getSpecificCompany(@PathVariable Integer companyId) {
+    public Company getSpecificCompany(@PathVariable String companyId) {
         return companyService.get(companyId);
     }
 
     @GetMapping("/{companyId}/employees")
-    public List<Employee> getSpecificCompanyEmployees(@PathVariable Integer companyId) {
+    public List<Employee> getSpecificCompanyEmployees(@PathVariable String companyId) {
         return companyService.getEmployeeList(companyId);
     }
 
@@ -36,22 +36,23 @@ public class CompanyController {
     public List<Company> getAllByPaging(
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer pageSize
-    ) throws OutOfRangeException {
-        return companyService.getAllByPage(page, pageSize);
+    ) {
+        return companyService.getAllByPage(page, pageSize).getContent();
     }
 
     @PostMapping
-    public Company create(@RequestBody Company companyUpdate) throws DuplicatedIdException {
+    @ResponseStatus(HttpStatus.CREATED)
+    public Company create(@RequestBody Company companyUpdate) {
         return companyService.add(companyUpdate);
     }
 
     @PutMapping("/{employeeId}")
-    public Company update(@PathVariable Integer companyId, @RequestBody Company companyUpdate) {
+    public Company update(@PathVariable String companyId, @RequestBody Company companyUpdate) {
         return companyService.update(companyId, companyUpdate);
     }
 
     @DeleteMapping("/{employeeId}")
-    public void delete(@PathVariable Integer companyId) {
+    public void delete(@PathVariable String companyId) {
         companyService.remove(companyId);
     }
 }

@@ -2,7 +2,6 @@ package com.thoughtworks.springbootemployee;
 
 
 import com.thoughtworks.springbootemployee.exception.DuplicatedIdException;
-import com.thoughtworks.springbootemployee.exception.NotFoundException;
 import com.thoughtworks.springbootemployee.exception.OutOfRangeException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
@@ -13,6 +12,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,10 +33,10 @@ public class CompanyTests {
     private CompanyRepository companyRepository;
 
     @Test
-    void should_return_company_when_add_company_given_no_company() throws DuplicatedIdException {
+    void should_return_company_when_add_company_given_no_company() {
         //given
-        Company company = new Company(1, "My Company", 1000, new ArrayList<>());
-        when(companyRepository.add(company)).thenReturn(company);
+        Company company = new Company("My Company", 1000, new ArrayList<>());
+        when(companyRepository.save(company)).thenReturn(company);
 
         //when
         final Company actual = companyService.add(company);
@@ -45,13 +47,13 @@ public class CompanyTests {
 
 
     @Test
-    void should_return_all_companies_when_get_all_companies_given_companies() throws DuplicatedIdException {
+    void should_return_all_companies_when_get_all_companies_given_companies() {
         //given
-        Company company = new Company(1, "My Company", 1000, new ArrayList<>());
+        Company company = new Company("My Company", 1000, new ArrayList<>());
         final List<Company> expected = Collections.singletonList(company);
         companyService.add(company);
 
-        when(companyRepository.getAll()).thenReturn(expected);
+        when(companyRepository.findAll()).thenReturn(expected);
         //when
         final List<Company> actual = companyService.getAll();
 
@@ -60,52 +62,54 @@ public class CompanyTests {
 
     }
     @Test
-    void should_return_specific_company_employee_list_when_get_company_employee_list_given_companies_company_id() throws DuplicatedIdException {
+    void should_return_specific_company_employee_list_when_get_company_employee_list_given_companies_company_id() {
         //given
         List<Employee> expected = new ArrayList<>();
         expected.add(new Employee());
-        when(companyRepository.getEmployeeList(1)).thenReturn(expected);
+        when(companyRepository.findEmployeeListByCompanyId("1")).thenReturn(expected);
 
-        companyService.add(new Company(1, "My Company", 1000, expected));
+        companyService.add(new Company("My Company", 1000, expected));
 
         //when
-        final List<Employee> actual = companyService.getEmployeeList(1);
+        final List<Employee> actual = companyService.getEmployeeList("1");
 
         //then
         assertEquals(expected, actual);
     }
 
     @Test
-    void should_return_first_2_companies_when_get_companies_by_page_given_companies_page1_pageSize2() throws DuplicatedIdException, OutOfRangeException {
+    void should_return_first_2_companies_when_get_companies_by_page_given_companies_page1_pageSize2() {
         //given
 
-        Company company1 = new Company(1, "My Company1", 1000, new ArrayList<>());
-        Company company2 = new Company(2, "My Company2", 1000, new ArrayList<>());
+        Company company1 = new Company("My Company1", 1000, new ArrayList<>());
+        Company company2 = new Company("My Company2", 1000, new ArrayList<>());
 
         companyService.add(company1);
         companyService.add(company2);
-        companyService.add(new Company(3, "My Company3", 1000, new ArrayList<>()));
+        companyService.add(new Company("My Company3", 1000, new ArrayList<>()));
 
-        final List<Company> expected = Arrays.asList(company1, company2);
+        final Page<Company> expected = new PageImpl<>(Arrays.asList(company1, company2));
 
-        when(companyRepository.getAllByPage(1, 2)).thenReturn(expected);
+        when(companyRepository.findAll(PageRequest.of(0, 2))).thenReturn(expected);
         //when
-        final List<Company> actual = companyService.getAllByPage(1, 2);
+        final Page<Company> actual = companyService.getAllByPage(1, 2);
 
         //then
         assertEquals(expected, actual);
     }
 
     @Test
-    void should_return_updated_employees_when_get_employee_given_employees_employee_id() throws DuplicatedIdException {
+    void should_return_updated_employees_when_get_employee_given_employees_employee_id() {
         //given
-        companyService.add(new Company(1, "My Company1", 1000, new ArrayList<>()));
+        Company oldCompany = new Company("My Company1", 1000, new ArrayList<>());
+        oldCompany.setId("1");
 
-        Company company = new Company(1, "My New Company1", 10000, new ArrayList<>());
-        when(companyRepository.update(1, company)).thenReturn(company);
+        Company company = new Company("My New Company1", 10000, new ArrayList<>());
+        when(companyRepository.findById("1")).thenReturn(java.util.Optional.of(company));
+        when(companyRepository.save(company)).thenReturn(company);
 
         //when
-        final Company actual = companyService.update(1, company);
+        final Company actual = companyService.update(oldCompany.getId(), company);
 
         //then
         assertEquals(company, actual);
