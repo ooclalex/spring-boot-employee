@@ -101,7 +101,7 @@ class EmployeeTests {
 		employeeService.add(new Employee("test", 18, 1000, "female"));
 
 		final Page<Employee> expected = new PageImpl<>(Arrays.asList(employee1, employee2));
-		when(employeeRepository.findAll(PageRequest.of(1, 2))).thenReturn(expected);
+		when(employeeRepository.findAll(PageRequest.of(0, 2))).thenReturn(expected);
 		//when
 		final Page<Employee> actual = employeeService.getAllByPage(1, 2);
 
