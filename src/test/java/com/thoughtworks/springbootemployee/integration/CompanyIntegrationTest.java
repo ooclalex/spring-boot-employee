@@ -30,7 +30,7 @@ public class CompanyIntegrationTest {
     private CompanyRepository companyRepository;
 
     @AfterEach
-    void tearDown(){
+    void tearDown() {
         companyRepository.deleteAll();
     }
 
@@ -89,11 +89,38 @@ public class CompanyIntegrationTest {
         Company company = companyRepository.save(new Company("ABC Company", 1000, new ArrayList<Employee>()));
         //when
         //then
-        mockMvc.perform(MockMvcRequestBuilders.get("/companies/"+company.getId()))
+        mockMvc.perform(MockMvcRequestBuilders.get("/companies/" + company.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isString())
                 .andExpect(jsonPath("$.name").value("ABC Company"))
                 .andExpect(jsonPath("$.employeeNumber").value(1000))
                 .andExpect(jsonPath("$.employees", hasSize(0)));
+    }
+
+
+    @Test
+    public void should_return_specific_company_employee_list_when_get_company_employee_list_given_company_id() throws Exception {
+        //given
+        List<Employee> expected = new ArrayList<Employee>();
+        Employee employee1 = new Employee("Victor", 18, 1000, "male");
+        Employee employee2 = new Employee("Mary", 19, 2000, "female");
+
+        expected.add(employee1);
+        expected.add(employee2);
+
+        Company company = companyRepository.save(new Company("ABC Company", 1000, expected));
+        //when
+        //then
+        mockMvc.perform(MockMvcRequestBuilders.get("/companies/" + company.getId() + "/employees"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.*", hasSize(2)))
+                .andExpect(jsonPath("$[0].name").value(employee1.getName()))
+                .andExpect(jsonPath("$[0].age").value(employee1.getAge()))
+                .andExpect(jsonPath("$[0].salary").value(employee1.getSalary()))
+                .andExpect(jsonPath("$[0].gender").value(employee1.getGender()))
+                .andExpect(jsonPath("$[1].name").value(employee2.getName()))
+                .andExpect(jsonPath("$[1].age").value(employee2.getAge()))
+                .andExpect(jsonPath("$[1].salary").value(employee2.getSalary()))
+                .andExpect(jsonPath("$[1].gender").value(employee2.getGender()));
     }
 }
