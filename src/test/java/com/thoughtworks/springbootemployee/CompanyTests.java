@@ -64,9 +64,9 @@ public class CompanyTests {
     @Test
     void should_return_specific_company_employee_list_when_get_company_employee_list_given_companies_company_id() {
         //given
+        Company company = new Company("My Company", 1000, new ArrayList<>());
         List<Employee> expected = new ArrayList<>();
-        expected.add(new Employee());
-        when(companyRepository.findEmployeeListByCompanyId("1")).thenReturn(expected);
+        when(companyRepository.findById("1")).thenReturn(java.util.Optional.of(company));
 
         companyService.add(new Company("My Company", 1000, expected));
 

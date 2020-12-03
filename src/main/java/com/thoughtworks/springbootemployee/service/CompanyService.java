@@ -16,7 +16,7 @@ import java.util.List;
 @Service
 public class CompanyService {
     @Autowired
-    private CompanyRepository companyRepository;
+    CompanyRepository companyRepository;
 
     public Company add(Company requestCompany) {
         return this.companyRepository.save(requestCompany);
@@ -31,7 +31,7 @@ public class CompanyService {
     }
 
     public List<Employee> getEmployeeList(String companyId) {
-        return companyRepository.findEmployeeListByCompanyId(companyId);
+        return companyRepository.findById(companyId).get().getEmployees();
     }
 
     public Page<Company> getAllByPage(int page, int pageSize) {
