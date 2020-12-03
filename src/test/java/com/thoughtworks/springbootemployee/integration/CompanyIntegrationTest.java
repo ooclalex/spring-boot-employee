@@ -82,4 +82,18 @@ public class CompanyIntegrationTest {
         assertEquals(1200, companyList.get(0).getEmployeeNumber());
         assertEquals(1, companyList.get(0).getEmployees().size());
     }
+
+    @Test
+    public void should_return_specific_company_when_get_company_given_company_id() throws Exception {
+        //given
+        Company company = companyRepository.save(new Company("ABC Company", 1000, new ArrayList<Employee>()));
+        //when
+        //then
+        mockMvc.perform(MockMvcRequestBuilders.get("/companies/"+company.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").isString())
+                .andExpect(jsonPath("$.name").value("ABC Company"))
+                .andExpect(jsonPath("$.employeeNumber").value(1000))
+                .andExpect(jsonPath("$.employees", hasSize(0)));
+    }
 }
