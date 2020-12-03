@@ -37,7 +37,7 @@ public class CompanyIntegrationTest {
     @Test
     public void should_return_all_companies_when_get_all_companies_given_companies() throws Exception {
         //given
-        Company company = new Company("ABC Company", 1000, new ArrayList<Employee>());
+        Company company = new Company("ABC Company", 1000, new ArrayList<>());
         companyRepository.save(company);
         //when
         //then
@@ -86,7 +86,7 @@ public class CompanyIntegrationTest {
     @Test
     public void should_return_specific_company_when_get_company_given_company_id() throws Exception {
         //given
-        Company company = companyRepository.save(new Company("ABC Company", 1000, new ArrayList<Employee>()));
+        Company company = companyRepository.save(new Company("ABC Company", 1000, new ArrayList<>()));
         //when
         //then
         mockMvc.perform(MockMvcRequestBuilders.get("/companies/" + company.getId()))
@@ -101,7 +101,7 @@ public class CompanyIntegrationTest {
     @Test
     public void should_return_specific_company_employee_list_when_get_company_employee_list_given_company_id() throws Exception {
         //given
-        List<Employee> expected = new ArrayList<Employee>();
+        List<Employee> expected = new ArrayList<>();
         Employee employee1 = new Employee("Victor", 18, 1000, "male");
         Employee employee2 = new Employee("Mary", 19, 2000, "female");
 
@@ -127,9 +127,9 @@ public class CompanyIntegrationTest {
     @Test
     public void should_return_first_2_employee_when_get_employee_by_page_given_employees_page1_pageSize2() throws Exception {
         //given
-        companyRepository.save(new Company("ABC Company", 1000, new ArrayList<Employee>()));
-        companyRepository.save(new Company("ABCD Company", 1100, new ArrayList<Employee>()));
-        companyRepository.save(new Company("AB Company", 100, new ArrayList<Employee>()));
+        companyRepository.save(new Company("ABC Company", 1000, new ArrayList<>()));
+        companyRepository.save(new Company("ABCD Company", 1100, new ArrayList<>()));
+        companyRepository.save(new Company("AB Company", 100, new ArrayList<>()));
         //when
         //then
         mockMvc.perform(MockMvcRequestBuilders.get("/companies")
@@ -142,7 +142,7 @@ public class CompanyIntegrationTest {
     @Test
     public void should_return_updated_company_when_update_company_given_company_company_id() throws Exception {
         //given
-        Company company = companyRepository.save(new Company("ABC Company", 1000, new ArrayList<Employee>()));
+        Company company = companyRepository.save(new Company("ABC Company", 1000, new ArrayList<>()));
         String companyAsJson = "{\n" +
                 "    \"name\" : \"ABCD Company\",\n" +
                 "    \"employeeNumber\" : \"1200\",\n" +
@@ -177,7 +177,7 @@ public class CompanyIntegrationTest {
     @Test
     public void should_return_null_when_delete_company_given_companies_new_company() throws Exception {
         //given
-        Company company = companyRepository.save(new Company("ABC Company", 1000, new ArrayList<Employee>()));
+        Company company = companyRepository.save(new Company("ABC Company", 1000, new ArrayList<>()));
 
         //when
         //then
