@@ -173,4 +173,16 @@ public class CompanyIntegrationTest {
         assertEquals(1200, companyList.get(0).getEmployeeNumber());
         assertEquals(1, companyList.get(0).getEmployees().size());
     }
+
+    @Test
+    public void should_return_null_when_delete_company_given_companies_new_company() throws Exception {
+        //given
+        Company company = companyRepository.save(new Company("ABC Company", 1000, new ArrayList<Employee>()));
+
+        //when
+        //then
+        mockMvc.perform(MockMvcRequestBuilders.delete("/companies/" + company.getId()));
+        List<Company> companyList = companyRepository.findAll();
+        assertEquals(0, companyList.size());
+    }
 }
