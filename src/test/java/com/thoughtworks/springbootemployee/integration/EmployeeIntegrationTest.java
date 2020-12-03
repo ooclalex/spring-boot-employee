@@ -162,4 +162,16 @@ public class EmployeeIntegrationTest {
         assertEquals(10000, employeeList.get(0).getSalary());
         assertEquals("female", employeeList.get(0).getGender());
     }
+
+    @Test
+    public void should_return_null_when_delete_employee_given_employees_new_employee() throws Exception {
+        //given
+        Employee employee = employeeRepository.save(new Employee("Victor", 18, 1000, "male"));
+
+        //when
+        //then
+        mockMvc.perform(MockMvcRequestBuilders.delete("/employees/" + employee.getId()));
+        List<Employee> employeeList = employeeRepository.findAll();
+        assertEquals(0, employeeList.size());
+    }
 }
