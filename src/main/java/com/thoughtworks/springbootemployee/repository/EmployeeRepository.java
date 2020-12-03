@@ -29,7 +29,7 @@ public class EmployeeRepository {
     }
 
     public List<Employee> getAll() {
-        return employees;
+        return this.employees;
     }
 
     public Employee get(int employeeId) {
@@ -52,7 +52,7 @@ public class EmployeeRepository {
 
     public List<Employee> getAllByGender(String gender) {
         return this.getAll().stream()
-                .filter(employee -> employee.getGender() == gender)
+                .filter(employee -> employee.getGender().equals(gender))
                 .collect(Collectors.toList());
     }
 

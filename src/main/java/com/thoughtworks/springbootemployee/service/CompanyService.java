@@ -5,18 +5,15 @@ import com.thoughtworks.springbootemployee.exception.OutOfRangeException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class CompanyService {
+    @Autowired
     private CompanyRepository companyRepository;
-    public CompanyService(){
-        this.companyRepository = new CompanyRepository();
-    }
-    public CompanyService(CompanyRepository companyRepository) {
-        this.companyRepository = companyRepository;
-    }
 
     public Company add(Company requestCompany) throws DuplicatedIdException {
         return this.companyRepository.add(requestCompany);
@@ -27,7 +24,7 @@ public class CompanyService {
     }
 
     public Company get(int companyId) {
-        return companyRepository.get(companyId);
+        return companyRepository.getByCompanyId(companyId);
     }
 
     public List<Employee> getEmployeeList(int companyId) {

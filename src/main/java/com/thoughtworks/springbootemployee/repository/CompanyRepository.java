@@ -5,12 +5,13 @@ import com.thoughtworks.springbootemployee.exception.NotFoundException;
 import com.thoughtworks.springbootemployee.exception.OutOfRangeException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
-import com.thoughtworks.springbootemployee.service.EmployeeService;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Repository
 public class CompanyRepository {
     private final List<Company> companies = new ArrayList<>();
 
@@ -26,7 +27,7 @@ public class CompanyRepository {
         return this.companies;
     }
 
-    public Company get(int companyId) {
+    public Company getByCompanyId(int companyId) {
         return this.getAll().stream()
                 .filter(company -> companyId == company.getId())
                 .findFirst()
@@ -34,15 +35,14 @@ public class CompanyRepository {
     }
 
     public List<Employee> getEmployeeList(int companyId) {
-        return this.get(companyId).getEmployeeList();
+        return this.getByCompanyId(companyId).getEmployees();
     }
 
     public List<Company> getAllByPage(int page, int pageSize) throws OutOfRangeException {
-        page--;
-        if(page < 0 || pageSize <0){
+        if(page < 1 || pageSize < 0){
             throw new OutOfRangeException();
         }
-        return this.companies.stream().skip(pageSize * page).limit(pageSize).collect(Collectors.toList());
+        return this.companies.stream().skip(pageSize * page - 1).limit(pageSize).collect(Collectors.toList());
     }
 
     public Company update(int companyId, Company updateCompany) {
@@ -52,7 +52,7 @@ public class CompanyRepository {
     }
 
     public void remove(int companyId) {
-        Company company = this.get(companyId);
+        Company company = this.getByCompanyId(companyId);
         this.companies.remove(company);
     }
 }
