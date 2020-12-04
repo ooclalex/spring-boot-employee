@@ -24,7 +24,9 @@ public class EmployeeController {
     }
     @GetMapping
     public List<EmployeeResponse> getAll() {
-        return employeeService.getAll().stream().map(employeeMapper::toResponse).collect(Collectors.toList());
+        return employeeService.getAll().stream()
+                .map(employeeMapper::toResponse)
+                .collect(Collectors.toList());
     }
 
     @GetMapping(params = {"page", "pageSize"})
@@ -32,7 +34,10 @@ public class EmployeeController {
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer pageSize
     ) {
-        return employeeService.getAllByPage(page, pageSize).getContent().stream().map(employeeMapper::toResponse).collect(Collectors.toList());
+        return employeeService.getAllByPage(page, pageSize)
+                .getContent().stream()
+                .map(employeeMapper::toResponse)
+                .collect(Collectors.toList());
     }
 
     @GetMapping(params = {"gender"})
