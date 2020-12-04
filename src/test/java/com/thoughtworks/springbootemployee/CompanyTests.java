@@ -65,13 +65,13 @@ public class CompanyTests {
     void should_return_specific_company_employee_list_when_get_company_employee_list_given_companies_company_id() {
         //given
         Company company = new Company("My Company", 1000, new ArrayList<>());
-        List<Employee> expected = new ArrayList<>();
+        List<String> expected = new ArrayList<>();
         when(companyRepository.findById("1")).thenReturn(java.util.Optional.of(company));
 
         companyService.add(new Company("My Company", 1000, expected));
 
         //when
-        final List<Employee> actual = companyService.getEmployeeList("1");
+        final List<String> actual = companyService.getEmployeeList("1");
 
         //then
         assertEquals(expected, actual);
@@ -101,15 +101,12 @@ public class CompanyTests {
     @Test
     void should_return_updated_employees_when_get_employee_given_employees_employee_id() {
         //given
-        Company oldCompany = new Company("My Company1", 1000, new ArrayList<>());
-        oldCompany.setId("1");
-
         Company company = new Company("My New Company1", 10000, new ArrayList<>());
-        when(companyRepository.findById("1")).thenReturn(java.util.Optional.of(company));
+        when(companyRepository.existsById("1")).thenReturn(true);
         when(companyRepository.save(company)).thenReturn(company);
 
         //when
-        final Company actual = companyService.update(oldCompany.getId(), company);
+        final Company actual = companyService.update("1", company);
 
         //then
         assertEquals(company, actual);

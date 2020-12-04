@@ -1,8 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
-import com.thoughtworks.springbootemployee.exception.DuplicatedIdException;
 import com.thoughtworks.springbootemployee.exception.NotFoundException;
-import com.thoughtworks.springbootemployee.exception.OutOfRangeException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
@@ -30,8 +28,8 @@ public class CompanyService {
         return companyRepository.findById(companyId).orElseThrow(NotFoundException::new);
     }
 
-    public List<Employee> getEmployeeList(String companyId) {
-        return companyRepository.findById(companyId).get().getEmployees();
+    public List<String> getEmployeeList(String companyId) {
+        return companyRepository.findById(companyId).orElseThrow(NotFoundException::new).getEmployees();
     }
 
     public Page<Company> getAllByPage(int page, int pageSize) {
@@ -39,11 +37,12 @@ public class CompanyService {
     }
 
     public Company update(String companyId, Company updateCompany) {
-        Company foundCompany = this.get(companyId);
-        foundCompany.setName(updateCompany.getName());
-        foundCompany.setEmployeeNumber(updateCompany.getEmployeeNumber());
-        foundCompany.setEmployees(updateCompany.getEmployees());
-        return companyRepository.save(foundCompany);
+        //todo: update boolean
+        if (companyRepository.existsById(companyId)){
+            updateCompany.setId(companyId);
+            return companyRepository.save(updateCompany);
+        }
+        throw new NotFoundException();
     }
 
     public void remove(String companyId) {

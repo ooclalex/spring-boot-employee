@@ -1,8 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
-import com.thoughtworks.springbootemployee.exception.DuplicatedIdException;
 import com.thoughtworks.springbootemployee.exception.NotFoundException;
-import com.thoughtworks.springbootemployee.exception.OutOfRangeException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -12,13 +12,14 @@ public class Company {
     private String id;
     private String name;
     private Integer employeeNumber;
-    private List<Employee> employees;
+
+    private List<String> employees;
 
     public Company() {
 
     }
 
-    public Company(String name, int employeeNumber, List<Employee> employees) {
+    public Company(String name, int employeeNumber, List<String> employees) {
         this.name = name;
         this.employeeNumber = employeeNumber;
         this.employees = employees;
@@ -48,11 +49,11 @@ public class Company {
         this.employeeNumber = employeeNumber;
     }
 
-    public List<Employee> getEmployees() {
+    public List<String> getEmployees() {
         return employees;
     }
 
-    public void setEmployees(List<Employee> employees) {
+    public void setEmployees(List<String> employees) {
         this.employees = employees;
     }
 }

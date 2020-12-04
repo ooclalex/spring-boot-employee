@@ -3,6 +3,7 @@ package com.thoughtworks.springbootemployee.integration;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,13 +57,7 @@ public class CompanyIntegrationTest {
                 "    \"name\" : \"ABC Company\",\n" +
                 "    \"employeeNumber\" : \"1200\",\n" +
                 "    \"employees\" : [\n" +
-                "        {\n" +
-                "            \"id\" : \"1\",\n" +
-                "            \"name\" : \"Victor\",\n" +
-                "            \"age\"   : \"18\",\n" +
-                "            \"salary\" : \"1000\",\n" +
-                "            \"gender\" : \"male\"\n" +
-                "        }\n" +
+                "        \"123\"\n" +
                 "    ]\n" +
                 "}";
         //when
@@ -101,27 +96,19 @@ public class CompanyIntegrationTest {
     @Test
     public void should_return_specific_company_employee_list_when_get_company_employee_list_given_company_id() throws Exception {
         //given
-        List<Employee> expected = new ArrayList<>();
-        Employee employee1 = new Employee("Victor", 18, 1000, "male");
-        Employee employee2 = new Employee("Mary", 19, 2000, "female");
+        List<String> expected = new ArrayList<>();
+        String employeeId1 = new ObjectId().toString();
+        String employeeId2 = new ObjectId().toString();
 
-        expected.add(employee1);
-        expected.add(employee2);
+        expected.add(employeeId1);
+        expected.add(employeeId2);
 
         Company company = companyRepository.save(new Company("ABC Company", 1000, expected));
         //when
         //then
         mockMvc.perform(MockMvcRequestBuilders.get("/companies/" + company.getId() + "/employees"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.*", hasSize(2)))
-                .andExpect(jsonPath("$[0].name").value(employee1.getName()))
-                .andExpect(jsonPath("$[0].age").value(employee1.getAge()))
-                .andExpect(jsonPath("$[0].salary").value(employee1.getSalary()))
-                .andExpect(jsonPath("$[0].gender").value(employee1.getGender()))
-                .andExpect(jsonPath("$[1].name").value(employee2.getName()))
-                .andExpect(jsonPath("$[1].age").value(employee2.getAge()))
-                .andExpect(jsonPath("$[1].salary").value(employee2.getSalary()))
-                .andExpect(jsonPath("$[1].gender").value(employee2.getGender()));
+                .andExpect(jsonPath("$.*", hasSize(2)));
     }
 
     @Test
@@ -147,13 +134,7 @@ public class CompanyIntegrationTest {
                 "    \"name\" : \"ABCD Company\",\n" +
                 "    \"employeeNumber\" : \"1200\",\n" +
                 "    \"employees\" : [\n" +
-                "        {\n" +
-                "            \"id\" : \"1\",\n" +
-                "            \"name\" : \"Victor\",\n" +
-                "            \"age\"   : \"18\",\n" +
-                "            \"salary\" : \"1000\",\n" +
-                "            \"gender\" : \"male\"\n" +
-                "        }\n" +
+                "        \"123\"\n" +
                 "    ]\n" +
                 "}";
         //when
@@ -181,6 +162,7 @@ public class CompanyIntegrationTest {
 
         //when
         //then
+        //todo: check response no content
         mockMvc.perform(MockMvcRequestBuilders.delete("/companies/" + company.getId()));
         List<Company> companyList = companyRepository.findAll();
         assertEquals(0, companyList.size());
