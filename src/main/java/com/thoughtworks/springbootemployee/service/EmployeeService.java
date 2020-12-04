@@ -1,6 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
-import com.thoughtworks.springbootemployee.exception.NotFoundException;
+import com.thoughtworks.springbootemployee.exception.EmployeeNotFoundException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class EmployeeService {
     }
 
     public Employee get(String employeeId) {
-        return employeeRepository.findById(employeeId).orElseThrow(NotFoundException::new);
+        return employeeRepository.findById(employeeId).orElseThrow(EmployeeNotFoundException::new);
     }
 
     public Employee update(String employeeId, Employee updateEmployee) {

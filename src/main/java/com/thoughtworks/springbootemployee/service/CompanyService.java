@@ -1,8 +1,7 @@
 package com.thoughtworks.springbootemployee.service;
 
-import com.thoughtworks.springbootemployee.exception.NotFoundException;
+import com.thoughtworks.springbootemployee.exception.CompanyNotFoundException;
 import com.thoughtworks.springbootemployee.model.Company;
-import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,11 +24,11 @@ public class CompanyService {
     }
 
     public Company get(String companyId) {
-        return companyRepository.findById(companyId).orElseThrow(NotFoundException::new);
+        return companyRepository.findById(companyId).orElseThrow(CompanyNotFoundException::new);
     }
 
     public List<String> getEmployeeList(String companyId) {
-        return companyRepository.findById(companyId).orElseThrow(NotFoundException::new).getEmployees();
+        return companyRepository.findById(companyId).orElseThrow(CompanyNotFoundException::new).getEmployees();
     }
 
     public Page<Company> getAllByPage(int page, int pageSize) {
@@ -37,12 +36,11 @@ public class CompanyService {
     }
 
     public Company update(String companyId, Company updateCompany) {
-        //todo: update boolean
         if (companyRepository.existsById(companyId)){
             updateCompany.setId(companyId);
             return companyRepository.save(updateCompany);
         }
-        throw new NotFoundException();
+        throw new CompanyNotFoundException();
     }
 
     public void remove(String companyId) {
