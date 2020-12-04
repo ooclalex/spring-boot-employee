@@ -92,6 +92,14 @@ public class CompanyIntegrationTest {
                 .andExpect(jsonPath("$.employees", hasSize(0)));
     }
 
+    @Test
+    public void should_return_not_found_when_get_company_given_invalid_company_id() throws Exception {
+        //given
+        //when
+        //then
+        mockMvc.perform(MockMvcRequestBuilders.get("/companies/" + "6fc9d0e060e64c0326fd2e92"))
+                .andExpect(status().isNotFound());
+    }
 
     @Test
     public void should_return_specific_company_employee_list_when_get_company_employee_list_given_company_id() throws Exception {
@@ -153,6 +161,24 @@ public class CompanyIntegrationTest {
         assertEquals("ABCD Company", companyList.get(0).getName());
         assertEquals(1200, companyList.get(0).getEmployeeNumber());
         assertEquals(1, companyList.get(0).getEmployees().size());
+    }
+
+    @Test
+    public void should_return_not_found_when_update_company_given_company_invalid_company_id() throws Exception {
+        //given
+        String companyAsJson = "{\n" +
+                "    \"name\" : \"ABCD Company\",\n" +
+                "    \"employeeNumber\" : \"1200\",\n" +
+                "    \"employees\" : [\n" +
+                "        \"123\"\n" +
+                "    ]\n" +
+                "}";
+        //when
+        //then
+        mockMvc.perform(MockMvcRequestBuilders.put("/companies/" + "6fc9d0e060e64c0326fd2e92")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(companyAsJson))
+                .andExpect(status().isNotFound());
     }
 
     @Test
