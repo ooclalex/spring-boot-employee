@@ -91,6 +91,16 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("gender").value("male"));
     }
 
+
+    @Test
+    public void should_return_not_found_when_get_employee_given_invalid_employee_id() throws Exception {
+        //given
+        //when
+        //then
+        mockMvc.perform(MockMvcRequestBuilders.get("/employees/"+"6fc9d0e060e64c0326fd2e92"))
+                .andExpect(status().isNotFound());
+    }
+
     @Test
     public void should_return_all_male_employees_when_get_all_employee_by_gender_given_employees_male() throws Exception {
         //given
@@ -162,16 +172,34 @@ public class EmployeeIntegrationTest {
     }
 
     @Test
+    public void should_return_not_found_when_updated_employee_given_employees_invalid_employee_id() throws Exception {
+        //given
+
+        String employeeAsJson = "{\n" +
+                "    \"name\" : \"Mary\",\n" +
+                "    \"age\"   : \"19\",\n" +
+                "    \"salary\" : \"10000\",\n" +
+                "    \"gender\" : \"female\"\n" +
+                "}";
+        //when
+        //then
+        mockMvc.perform(MockMvcRequestBuilders.put("/employees/" + "6fc9d0e060e64c0326fd2e92")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(employeeAsJson))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     public void should_return_null_when_delete_employee_given_employees_new_employee() throws Exception {
         //given
         Employee employee = employeeRepository.save(new Employee("Victor", 18, 1000, "male"));
 
         //when
         //then
-        //todo check http response no content
         mockMvc.perform(MockMvcRequestBuilders.delete("/employees/" + employee.getId()))
                 .andExpect(status().isNoContent());
         List<Employee> employeeList = employeeRepository.findAll();
         assertEquals(0, employeeList.size());
     }
+
 }
