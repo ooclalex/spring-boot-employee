@@ -169,7 +169,8 @@ public class EmployeeIntegrationTest {
         //when
         //then
         //todo check http response no content
-        mockMvc.perform(MockMvcRequestBuilders.delete("/employees/" + employee.getId()));
+        mockMvc.perform(MockMvcRequestBuilders.delete("/employees/" + employee.getId()))
+                .andExpect(status().isNoContent());
         List<Employee> employeeList = employeeRepository.findAll();
         assertEquals(0, employeeList.size());
     }
