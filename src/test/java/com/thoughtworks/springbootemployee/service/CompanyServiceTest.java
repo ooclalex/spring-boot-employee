@@ -1,9 +1,8 @@
-package com.thoughtworks.springbootemployee;
+package com.thoughtworks.springbootemployee.service;
 
 
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
-import com.thoughtworks.springbootemployee.service.CompanyService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class CompanyTests {
+public class CompanyServiceTest {
 
     @InjectMocks
     private CompanyService companyService;
@@ -58,6 +57,7 @@ public class CompanyTests {
         assertEquals(expected, actual);
 
     }
+
     @Test
     void should_return_specific_company_employee_list_when_get_company_employee_list_given_companies_company_id() {
         //given

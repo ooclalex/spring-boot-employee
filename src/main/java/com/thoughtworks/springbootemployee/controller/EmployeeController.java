@@ -19,9 +19,11 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     private final EmployeeMapper employeeMapper;
-    public EmployeeController(EmployeeMapper employeeMapper){
+
+    public EmployeeController(EmployeeMapper employeeMapper) {
         this.employeeMapper = employeeMapper;
     }
+
     @GetMapping
     public List<EmployeeResponse> getAll() {
         return employeeService.getAll().stream()
