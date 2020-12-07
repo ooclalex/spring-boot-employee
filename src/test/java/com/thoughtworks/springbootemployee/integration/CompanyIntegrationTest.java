@@ -187,8 +187,8 @@ public class CompanyIntegrationTest {
 
         //when
         //then
-        //todo: check response no content
-        mockMvc.perform(MockMvcRequestBuilders.delete("/companies/" + company.getId()));
+        mockMvc.perform(MockMvcRequestBuilders.delete("/companies/" + company.getId()))
+                .andExpect(status().isNoContent());
         List<Company> companyList = companyRepository.findAll();
         assertEquals(0, companyList.size());
     }
